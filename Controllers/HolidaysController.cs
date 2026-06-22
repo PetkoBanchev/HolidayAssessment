@@ -23,5 +23,12 @@ namespace HolidayAssessment.Controllers
             await _service.ImportHolidaysAsync(request.Year, request.CountryCodes);
             return Ok("Import completed");
         }
+
+        [HttpGet("{countryCode}/last-three")]
+        public async Task<IActionResult> GetLastThree(string countryCode)
+        {
+            var result = await _service.GetLastThreeHolidaysAsync(countryCode);
+            return Ok(result);
+        }
     }
 }

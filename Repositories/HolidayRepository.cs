@@ -19,10 +19,17 @@ namespace HolidayAssessment.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year)
+        public async Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year)
         {
-            return _context.Holidays
+            return await _context.Holidays
                 .Where(h => h.CountryCode == countryCode && h.Date.Year == year)
+                .ToListAsync();
+        }
+
+        public async Task<List<Holiday>> GetByCountryAsync(string countryCode)
+        {
+            return await _context.Holidays
+                .Where(h => h.CountryCode == countryCode)
                 .ToListAsync();
         }
     }

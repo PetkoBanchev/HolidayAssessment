@@ -1,4 +1,5 @@
 ﻿using HolidayAssessment.Clients;
+using HolidayAssessment.DTOs;
 using HolidayAssessment.Models;
 using HolidayAssessment.Repositories;
 
@@ -13,6 +14,22 @@ namespace HolidayAssessment.Services
         {
             _client = client;
             _repository = repository;
+        }
+
+        public async Task<List<HolidayResponseDto>> GetLastThreeHolidaysAsync(string countryCode)
+        {
+            var holidays = await _repository.GetByCountryAsync(countryCode);
+
+            return holidays
+                .Where(h => h.Date < DateOnly.FromDateTime(DateTime.Today))
+                .OrderByDescending(h => h.Date)
+                .Take(3)
+                .Select(h => new HolidayResponseDto
+                {
+                    Date = h.Date,
+                    Name = h.Name
+                })
+                .ToList();
         }
 
         public async Task ImportHolidaysAsync(int year, List<string> countryCodes)

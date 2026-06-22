@@ -6,5 +6,7 @@ namespace HolidayAssessment.Repositories
     {
         Task AddRangeAsync(IEnumerable<Holiday> holidays);
         Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year);
+
+        Task<List<Holiday>> GetByCountryAsync(string countryCode);
     }
 }
