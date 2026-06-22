@@ -1,0 +1,29 @@
+﻿using HolidayAssessment.Data;
+using HolidayAssessment.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace HolidayAssessment.Repositories
+{
+    public class HolidayRepository: IHolidayRepository
+    {
+        private readonly AppDbContext _context;
+
+        public HolidayRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddRangeAsync(IEnumerable<Holiday> holidays)
+        {
+            await _context.Holidays.AddRangeAsync(holidays);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year)
+        {
+            return _context.Holidays
+                .Where(h => h.CountryCode == countryCode && h.Date.Year == year)
+                .ToListAsync();
+        }
+    }
+}

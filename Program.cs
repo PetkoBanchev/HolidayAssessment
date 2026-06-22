@@ -1,6 +1,9 @@
-using HolidayAssessment.Data;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using HolidayAssessment.Data;
+using HolidayAssessment.Clients;
+using HolidayAssessment.Repositories;
+using HolidayAssessment.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,14 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHttpClient<INagerApiClient, NagerApiClient>(client =>
+{
+    client.BaseAddress = new Uri("https://date.nager.at/api/v3/");
+});
+
+builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
+builder.Services.AddScoped<IHolidayService, HolidayService>();
 
 var app = builder.Build();
 
