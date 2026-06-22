@@ -32,5 +32,12 @@ namespace HolidayAssessment.Repositories
                 .Where(h => h.CountryCode == countryCode)
                 .ToListAsync();
         }
+
+        public async Task<List<Holiday>> GetByCountriesAsync(List<string> countryCodes, int year)
+        {
+            return await _context.Holidays
+                .Where(h => countryCodes.Contains(h.CountryCode) && h.Date.Year == year)
+                .ToListAsync();
+        }
     }
 }

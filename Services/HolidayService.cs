@@ -32,6 +32,30 @@ namespace HolidayAssessment.Services
                 .ToList();
         }
 
+        public async Task<List<WeekdayHolidayDto>> GetHolidaysOnWeekdaysAsync(int year, List<String> countryCodes)
+        {
+            var holidays = await _repository.GetByCountriesAsync(countryCodes, year);
+
+            return holidays
+                .Where(h => (h.Date.DayOfWeek != DayOfWeek.Saturday && h.Date.DayOfWeek != DayOfWeek.Sunday))
+                .OrderBy (h => h.CountryCode)
+                .ThenBy(h => h.Date)
+                .Select(h => new WeekdayHolidayDto { Date = h.Date, Name = h.Name, CountryCode = h.CountryCode })
+                .ToList();
+        }
+
+        public async Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes)
+        {
+            var holidays = await _repository.GetByCountriesAsync(countryCodes, year);
+
+            return holidays
+                .Where(h => h.Date.DayOfWeek != DayOfWeek.Saturday && h.Date.DayOfWeek != DayOfWeek.Sunday)
+                .GroupBy(h => h.CountryCode)
+                .Select(g => new CountryHolidayCountDto{CountryCode = g.Key, Count = g.Count()})
+                .OrderByDescending(x => x.Count)
+                .ToList();
+        }
+
         public async Task ImportHolidaysAsync(int year, List<string> countryCodes)
         {
             foreach (var country in countryCodes)

@@ -7,5 +7,9 @@ namespace HolidayAssessment.Services
         Task ImportHolidaysAsync(int year, List<string> countryCodes);
 
         Task<List<HolidayResponseDto>> GetLastThreeHolidaysAsync(string countryCode);
+
+        Task<List<WeekdayHolidayDto>> GetHolidaysOnWeekdaysAsync(int year, List<String> countryCodes);
+
+        Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes);
     }
 }

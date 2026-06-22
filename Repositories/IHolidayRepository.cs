@@ -8,5 +8,6 @@ namespace HolidayAssessment.Repositories
         Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year);
 
         Task<List<Holiday>> GetByCountryAsync(string countryCode);
+        Task<List<Holiday>> GetByCountriesAsync(List<string> countryCodes, int year);
     }
 }

@@ -30,5 +30,19 @@ namespace HolidayAssessment.Controllers
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return Ok(result);
         }
+
+        [HttpGet("holidays-on-weekdays")]
+        public async Task<IActionResult> GetHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        {
+            var result =  await _service.GetHolidaysOnWeekdaysAsync(year, countryCodes);
+            return Ok(result);
+        }
+
+        [HttpGet("number-of-honidays-on-weekdays-per-country")]
+        public async Task<IActionResult> GetNumberOfHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        {
+            var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(year, countryCodes);
+            return Ok(result);
+        }
     }
 }
