@@ -2,6 +2,7 @@
 using HolidayAssessment.DTOs;
 using HolidayAssessment.Models;
 using HolidayAssessment.Repositories;
+using System.Linq;
 
 namespace HolidayAssessment.Services
 {
@@ -77,6 +78,25 @@ namespace HolidayAssessment.Services
 
                 await _repository.AddRangeAsync(entities);
             }
-        }          
+        }
+
+        public async Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, List<string> countryCodes)
+        {
+            var holidaysA = await _repository.GetByCountryAndYearAsync(countryCodes[0], year);
+            var holidaysB = await _repository.GetByCountryAndYearAsync(countryCodes[1], year);
+
+            var sharedHolidays = holidaysA
+                .IntersectBy(holidaysB.Select(h => h.Date), h => h.Date)
+                .Select(h =>
+                {
+                    var holidayB = holidaysB.First(x => x.Date == h.Date);
+
+                    return new SharedHolidayDto { Date = h.Date, LocalNameA = h.LocalName, LocalNameB = holidayB.LocalName };
+                })
+                
+                .ToList();
+
+            return sharedHolidays;
+        }
     }
 }

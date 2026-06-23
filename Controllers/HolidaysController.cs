@@ -44,5 +44,12 @@ namespace HolidayAssessment.Controllers
             var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(year, countryCodes);
             return Ok(result);
         }
+
+        [HttpGet("shared-holidays-per-two-countries")]
+        public async Task<IActionResult> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        {
+            var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryCodes);
+            return Ok(result);
+        }
     }
 }

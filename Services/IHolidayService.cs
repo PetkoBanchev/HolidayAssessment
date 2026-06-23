@@ -11,5 +11,7 @@ namespace HolidayAssessment.Services
         Task<List<WeekdayHolidayDto>> GetHolidaysOnWeekdaysAsync(int year, List<String> countryCodes);
 
         Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes);
+
+        Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, List<string> countryCodes);
     }
 }
