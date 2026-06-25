@@ -56,10 +56,10 @@ namespace HolidayAssessment.Services
                 .ToList();
         }
 
-        public async Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, List<string> countryCodes)
+        public async Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, string countryA, string countryB)
         {
-            var holidaysA = await _repository.GetByCountryAndYearAsync(countryCodes[0], year);
-            var holidaysB = await _repository.GetByCountryAndYearAsync(countryCodes[1], year);
+            var holidaysA = await _repository.GetByCountryAndYearAsync(countryA, year);
+            var holidaysB = await _repository.GetByCountryAndYearAsync(countryB, year);
 
             var sharedHolidays = holidaysA
                 .IntersectBy(holidaysB.Select(h => h.Date), h => h.Date)

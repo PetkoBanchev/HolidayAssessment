@@ -1,4 +1,5 @@
 ﻿using HolidayAssessment.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HolidayAssessment.Services
 {
@@ -12,6 +13,6 @@ namespace HolidayAssessment.Services
 
         Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes);
 
-        Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, List<string> countryCodes);
+        Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, string countryA, string countryB);
     }
 }

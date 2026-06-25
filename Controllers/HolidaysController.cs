@@ -23,7 +23,7 @@ namespace HolidayAssessment.Controllers
         }
 
         [HttpGet("{countryCode}/last-three")]
-        public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree(string countryCode)
+        public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree([FromQuery] string countryCode)
         {
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return Ok(result);
@@ -44,9 +44,9 @@ namespace HolidayAssessment.Controllers
         }
 
         [HttpGet("shared-holidays-per-two-countries")]
-        public async Task<ActionResult<List<SharedHolidayDto>>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        public async Task<ActionResult<List<SharedHolidayDto>>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] string countryA, [FromQuery] string countryB)
         {
-            var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryCodes);
+            var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryA, countryB);
             return Ok(result);
         }
     }
