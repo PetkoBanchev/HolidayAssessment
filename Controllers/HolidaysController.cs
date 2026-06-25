@@ -23,28 +23,28 @@ namespace HolidayAssessment.Controllers
         }
 
         [HttpGet("{countryCode}/last-three")]
-        public async Task<IActionResult> GetLastThree(string countryCode)
+        public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree(string countryCode)
         {
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return Ok(result);
         }
 
         [HttpGet("holidays-on-weekdays")]
-        public async Task<IActionResult> GetHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
         {
             var result =  await _service.GetHolidaysOnWeekdaysAsync(year, countryCodes);
             return Ok(result);
         }
 
         [HttpGet("number-of-honidays-on-weekdays-per-country")]
-        public async Task<IActionResult> GetNumberOfHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetNumberOfHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
         {
             var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(year, countryCodes);
             return Ok(result);
         }
 
         [HttpGet("shared-holidays-per-two-countries")]
-        public async Task<IActionResult> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        public async Task<ActionResult<List<SharedHolidayDto>>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] List<string> countryCodes)
         {
             var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryCodes);
             return Ok(result);
