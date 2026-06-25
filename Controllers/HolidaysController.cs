@@ -1,8 +1,6 @@
-﻿using HolidayAssessment.Clients;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using HolidayAssessment.DTOs;
+﻿using HolidayAssessment.DTOs;
 using HolidayAssessment.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HolidayAssessment.Controllers
 {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HolidayAssessment.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(HolidayDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

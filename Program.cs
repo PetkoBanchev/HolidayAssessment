@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Scalar.AspNetCore;
-using HolidayAssessment.Data;
 using HolidayAssessment.Clients;
+using HolidayAssessment.Data;
 using HolidayAssessment.Repositories;
 using HolidayAssessment.Services;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<HolidayDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddHttpClient<INagerApiClient, NagerApiClient>(client =>

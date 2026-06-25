@@ -57,29 +57,6 @@ namespace HolidayAssessment.Services
                 .ToList();
         }
 
-        public async Task ImportHolidaysAsync(int year, List<string> countryCodes)
-        {
-            foreach (var country in countryCodes)
-            {
-                var apiData = await _client.GetPublicHolidaysAsync(year, country);
-
-                var entities = apiData.Select(dto => new Holiday
-                {
-                    Date = dto.Date,
-                    LocalName = dto.LocalName,
-                    Name = dto.Name,
-                    CountryCode = dto.CountryCode,
-                    Fixed = dto.Fixed,
-                    Global = dto.Global,
-                    LaunchYear = dto.LaunchYear,
-                    Counties = dto.Counties is null ? null : string.Join(",", dto.Counties),
-                    Types = string.Join(",", dto.Types)
-                });
-
-                await _repository.AddRangeAsync(entities);
-            }
-        }
-
         public async Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, List<string> countryCodes)
         {
             var holidaysA = await _repository.GetByCountryAndYearAsync(countryCodes[0], year);
@@ -97,6 +74,38 @@ namespace HolidayAssessment.Services
                 .ToList();
 
             return sharedHolidays;
+        }
+        
+        public async Task ImportHolidaysAsync(int year, List<string> countryCodes)
+        {
+            foreach (var country in countryCodes)
+            {
+                var existing = await _repository.GetByCountryAndYearAsync(country, year);
+
+                var existingDates = existing
+                    .Select(x => x.Date)
+                    .ToHashSet();
+
+                var apiData = await _client.GetPublicHolidaysAsync(year, country);
+
+                var newEntities = apiData
+                    .Where(x => !existingDates.Contains(x.Date))
+                    .Select(x => new Holiday
+                    {
+                        Date = x.Date,
+                        Name = x.Name,
+                        LocalName = x.LocalName,
+                        CountryCode = x.CountryCode,
+                        Fixed = x.Fixed,
+                        Global = x.Global,
+                        LaunchYear = x.LaunchYear,
+                        Counties = x.Counties is null ? null : string.Join(",", x.Counties),
+                        Types = string.Join(",", x.Types)
+                    })
+                    .ToList();
+
+                await _repository.AddRangeAsync(newEntities);
+            }
         }
     }
 }

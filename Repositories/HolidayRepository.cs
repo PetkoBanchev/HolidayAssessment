@@ -6,9 +6,9 @@ namespace HolidayAssessment.Repositories
 {
     public class HolidayRepository: IHolidayRepository
     {
-        private readonly AppDbContext _context;
+        private readonly HolidayDbContext _context;
 
-        public HolidayRepository(AppDbContext context)
+        public HolidayRepository(HolidayDbContext context)
         {
             _context = context;
         }

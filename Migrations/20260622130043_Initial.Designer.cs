@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HolidayAssessment.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(HolidayDbContext))]
     [Migration("20260622130043_Initial")]
     partial class Initial
     {

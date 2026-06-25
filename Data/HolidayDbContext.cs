@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HolidayAssessment.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    public class HolidayDbContext(DbContextOptions<HolidayDbContext> options) : DbContext(options)
     {
         public DbSet<Holiday> Holidays => Set<Holiday>();
 
