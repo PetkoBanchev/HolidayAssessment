@@ -2,7 +2,6 @@
 using HolidayAssessment.DTOs;
 using HolidayAssessment.Models;
 using HolidayAssessment.Repositories;
-using System.Linq;
 
 namespace HolidayAssessment.Services
 {
@@ -19,7 +18,7 @@ namespace HolidayAssessment.Services
 
         public async Task<List<HolidayResponseDto>> GetLastThreeHolidaysAsync(string countryCode)
         {
-            var holidays = await _repository.GetByCountryAsync(countryCode);
+            var holidays = await _repository.GetByCountryAndYearAsync(countryCode, DateTime.Today.Year);
 
             return holidays
                 .Where(h => h.Date < DateOnly.FromDateTime(DateTime.Today))
@@ -35,7 +34,7 @@ namespace HolidayAssessment.Services
 
         public async Task<List<WeekdayHolidayDto>> GetHolidaysOnWeekdaysAsync(int year, List<String> countryCodes)
         {
-            var holidays = await _repository.GetByCountriesAsync(countryCodes, year);
+            var holidays = await _repository.GetByCountriesAndYearAsync(countryCodes, year);
 
             return holidays
                 .Where(h => (h.Date.DayOfWeek != DayOfWeek.Saturday && h.Date.DayOfWeek != DayOfWeek.Sunday))
@@ -47,7 +46,7 @@ namespace HolidayAssessment.Services
 
         public async Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes)
         {
-            var holidays = await _repository.GetByCountriesAsync(countryCodes, year);
+            var holidays = await _repository.GetByCountriesAndYearAsync(countryCodes, year);
 
             return holidays
                 .Where(h => h.Date.DayOfWeek != DayOfWeek.Saturday && h.Date.DayOfWeek != DayOfWeek.Sunday)

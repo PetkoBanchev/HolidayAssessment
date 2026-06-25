@@ -19,13 +19,6 @@ namespace HolidayAssessment.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year)
-        {
-            return await _context.Holidays
-                .Where(h => h.CountryCode == countryCode && h.Date.Year == year)
-                .ToListAsync();
-        }
-
         public async Task<List<Holiday>> GetByCountryAsync(string countryCode)
         {
             return await _context.Holidays
@@ -33,7 +26,14 @@ namespace HolidayAssessment.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Holiday>> GetByCountriesAsync(List<string> countryCodes, int year)
+        public async Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year)
+        {
+            return await _context.Holidays
+                .Where(h => h.CountryCode == countryCode && h.Date.Year == year)
+                .ToListAsync();
+        }
+
+        public async Task<List<Holiday>> GetByCountriesAndYearAsync(List<string> countryCodes, int year)
         {
             return await _context.Holidays
                 .Where(h => countryCodes.Contains(h.CountryCode) && h.Date.Year == year)

@@ -1,6 +1,27 @@
-@HolidayAssessment_HostAddress = http://localhost:5181
+@baseUrl = https://localhost:5001
 
-GET {{HolidayAssessment_HostAddress}}/weatherforecast/
-Accept: application/json
+### =========================
+### IMPORT HOLIDAYS
+### =========================
+POST {{baseUrl}}/api/holidays/import
+Content-Type: application/json
 
-###
+{
+  "year": 2025,
+  "countryCodes": ["NL", "DE"]
+}
+
+### =========================
+### GET LAST 3 HOLIDAYS (by country)
+### =========================
+GET {{baseUrl}}/api/holidays/NL/last-three
+
+### =========================
+### HOLIDAYS NOT ON WEEKENDS (by year + countries)
+### =========================
+GET {{baseUrl}}/api/holidays/weekday-count?year=2025&countryCodes=NL&countryCodes=DE
+
+### =========================
+### SHARED HOLIDAYS (2 countries)
+### =========================
+GET {{baseUrl}}/api/holidays/shared?year=2025&countryCodeA=NL&countryCodeB=DE

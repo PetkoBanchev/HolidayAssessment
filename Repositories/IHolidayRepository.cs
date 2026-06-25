@@ -5,9 +5,8 @@ namespace HolidayAssessment.Repositories
     public interface IHolidayRepository
     {
         Task AddRangeAsync(IEnumerable<Holiday> holidays);
-        Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year);
-
         Task<List<Holiday>> GetByCountryAsync(string countryCode);
-        Task<List<Holiday>> GetByCountriesAsync(List<string> countryCodes, int year);
+        Task<List<Holiday>> GetByCountryAndYearAsync(string countryCode, int year);
+        Task<List<Holiday>> GetByCountriesAndYearAsync(List<string> countryCodes, int year);
     }
 }
