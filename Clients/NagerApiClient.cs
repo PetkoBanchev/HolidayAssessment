@@ -20,5 +20,13 @@ namespace HolidayAssessment.Clients
             return result ?? new List<HolidayApiDto>();
         }
 
+        public async Task<List<CountryApiDto>> GetAvailableCountriesAsync()
+        {
+            var url = $"AvailableCountries";
+
+            var result = await _httpClient.GetFromJsonAsync<List<CountryApiDto>>(url);
+
+            return result ?? new List<CountryApiDto>();
+        }
     }
 }

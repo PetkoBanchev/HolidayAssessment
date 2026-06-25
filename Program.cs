@@ -2,6 +2,7 @@ using HolidayAssessment.Clients;
 using HolidayAssessment.Data;
 using HolidayAssessment.Repositories;
 using HolidayAssessment.Services;
+using HolidayAssessment.Validators;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -23,8 +24,16 @@ builder.Services.AddHttpClient<INagerApiClient, NagerApiClient>(client =>
 
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
 builder.Services.AddScoped<IHolidayService, HolidayService>();
+builder.Services.AddScoped<CountrySeeder>();
+builder.Services.AddScoped<CountryValidator>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<CountrySeeder>();
+    await seeder.SeedAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

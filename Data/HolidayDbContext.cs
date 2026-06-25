@@ -6,6 +6,7 @@ namespace HolidayAssessment.Data
     public class HolidayDbContext(DbContextOptions<HolidayDbContext> options) : DbContext(options)
     {
         public DbSet<Holiday> Holidays => Set<Holiday>();
+        public DbSet<Country> Countries => Set<Country>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,20 @@ namespace HolidayAssessment.Data
                     .HasMaxLength(500);
 
                 entity.HasIndex(x => new { x.CountryCode, x.Date })
+                    .IsUnique();
+            });
+
+            modelBuilder.Entity<Country>(entity =>
+            {
+                entity.Property(x => x.CountryCode)
+                    .IsRequired()
+                    .HasMaxLength(2);
+
+                entity.Property(x => x.Name)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.HasIndex(x => x.CountryCode)
                     .IsUnique();
             });
         }
