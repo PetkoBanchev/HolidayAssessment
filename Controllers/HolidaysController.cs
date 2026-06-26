@@ -1,5 +1,6 @@
 ﻿using HolidayAssessment.DTOs;
 using HolidayAssessment.Services;
+using HolidayAssessment.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HolidayAssessment.Controllers
@@ -9,10 +10,12 @@ namespace HolidayAssessment.Controllers
     public class HolidaysController : ControllerBase
     {
         private readonly IHolidayService _service;
+        private readonly CountryValidator _countryValidator;
 
-        public HolidaysController(IHolidayService service) 
+        public HolidaysController(IHolidayService service,  CountryValidator validator) 
         {
             _service = service;
+            _countryValidator = validator;
         }
 
         [HttpPost("import")]
@@ -23,8 +26,11 @@ namespace HolidayAssessment.Controllers
         }
 
         [HttpGet("{countryCode}/last-three")]
-        public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree([FromQuery] string countryCode)
+        public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree(string countryCode)
         {
+            if(await _countryValidator.ValidateCountryCode(countryCode) == false)
+                return NotFound("Contry code invalid or not supported");
+
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return Ok(result);
         }
@@ -46,6 +52,10 @@ namespace HolidayAssessment.Controllers
         [HttpGet("shared-holidays-per-two-countries")]
         public async Task<ActionResult<List<SharedHolidayDto>>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] string countryA, [FromQuery] string countryB)
         {
+            if (!YearValidator.Validate(year))
+                return NotFound("Year not supported");
+            if (await _countryValidator.ValidateCountryCode(countryA) == false || await _countryValidator.ValidateCountryCode(countryB) == false)
+                return NotFound("Contry code invalid or not supported");
             var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryA, countryB);
             return Ok(result);
         }
