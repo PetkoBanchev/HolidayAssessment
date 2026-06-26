@@ -44,7 +44,7 @@ namespace HolidayAssessment.Controllers
             return result;
         }
 
-        [HttpPost("holidays-on-weekdays")]
+        [HttpPost("weekday-holidays")]
         public async Task<IEnumerable<WeekdayHolidayDto>> GetHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
         {
             try
@@ -63,7 +63,7 @@ namespace HolidayAssessment.Controllers
             return result;
         }
 
-        [HttpPost("number-of-holidays-on-weekdays-per-country")]
+        [HttpPost("weekday-holidays-count")]
         public async Task<IEnumerable<CountryHolidayCountDto>?> GetNumberOfHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
         {
             try
@@ -83,7 +83,7 @@ namespace HolidayAssessment.Controllers
             return result;
         }
 
-        [HttpGet("shared-holidays-per-two-countries")]
+        [HttpGet("shared-holidays")]
         public async Task<IEnumerable<SharedHolidayDto>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] string countryA, [FromQuery] string countryB)
         {
             try
