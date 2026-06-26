@@ -1,4 +1,4 @@
-﻿namespace HolidayAssessment.DTOs
+﻿namespace HolidayAssessment.DTOs.ApiDTOs
 {
     public class CountryApiDto
     {

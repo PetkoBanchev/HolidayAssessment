@@ -1,4 +1,6 @@
-﻿using HolidayAssessment.DTOs;
+﻿using Azure.Core;
+using HolidayAssessment.DTOs;
+using HolidayAssessment.DTOs.RequestDTOs;
 using HolidayAssessment.Services;
 using HolidayAssessment.Validators;
 using Microsoft.AspNetCore.Mvc;
@@ -28,34 +30,56 @@ namespace HolidayAssessment.Controllers
         [HttpGet("{countryCode}/last-three")]
         public async Task<ActionResult<List<HolidayResponseDto>>> GetLastThree(string countryCode)
         {
-            if(await _countryValidator.ValidateCountryCode(countryCode) == false)
-                return NotFound("Contry code invalid or not supported");
+            var countryResult = await _countryValidator.ValidateCountryCodeAsync(countryCode);
+            if (!countryResult.IsValid)
+                return BadRequest(countryResult.ErrorMessage);
 
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return Ok(result);
         }
 
-        [HttpGet("holidays-on-weekdays")]
-        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        [HttpPost("holidays-on-weekdays")]
+        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
         {
-            var result =  await _service.GetHolidaysOnWeekdaysAsync(year, countryCodes);
+            var yearResult = YearValidator.Validate(request.Year);
+            if(!yearResult.IsValid)
+                return BadRequest(yearResult.ErrorMessage);
+
+            var countryResult = await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
+            if (!countryResult.IsValid)
+                return BadRequest(countryResult.ErrorMessage);
+
+            var result =  await _service.GetHolidaysOnWeekdaysAsync(request.Year, request.CountryCodes);
             return Ok(result);
         }
 
-        [HttpGet("number-of-honidays-on-weekdays-per-country")]
-        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetNumberOfHolidaysOnWeekdays([FromQuery] int year, [FromQuery] List<string> countryCodes)
+        [HttpPost("number-of-holidays-on-weekdays-per-country")]
+        public async Task<ActionResult<List<WeekdayHolidayDto>>> GetNumberOfHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
         {
-            var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(year, countryCodes);
+            var yearResult = YearValidator.Validate(request.Year);
+            if (!yearResult.IsValid)
+                return BadRequest(yearResult.ErrorMessage);
+
+            var countryResult = await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
+            if (!countryResult.IsValid)
+                return BadRequest(countryResult.ErrorMessage);
+
+
+            var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(request.Year, request.CountryCodes);
             return Ok(result);
         }
 
         [HttpGet("shared-holidays-per-two-countries")]
         public async Task<ActionResult<List<SharedHolidayDto>>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] string countryA, [FromQuery] string countryB)
         {
-            if (!YearValidator.Validate(year))
-                return NotFound("Year not supported");
-            if (await _countryValidator.ValidateCountryCode(countryA) == false || await _countryValidator.ValidateCountryCode(countryB) == false)
-                return NotFound("Contry code invalid or not supported");
+            var yearResult = YearValidator.Validate(year);
+            if (!yearResult.IsValid)
+                return BadRequest(yearResult.ErrorMessage);
+
+            var countryResult = await _countryValidator.ValidateCountryCodesAsync(new List<string> { countryA, countryB });
+            if (!countryResult.IsValid)
+                return BadRequest(countryResult.ErrorMessage);
+
             var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryA, countryB);
             return Ok(result);
         }

@@ -1,4 +1,4 @@
-﻿using HolidayAssessment.DTOs;
+﻿using HolidayAssessment.DTOs.ApiDTOs;
 
 namespace HolidayAssessment.Clients
 {

@@ -1,4 +1,5 @@
-﻿using HolidayAssessment.Constants;
+﻿using HolidayAssessment.Common;
+using HolidayAssessment.Constants;
 
 namespace HolidayAssessment.Validators
 {
@@ -9,9 +10,12 @@ namespace HolidayAssessment.Validators
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
-        public static bool Validate(int year)
+        public static InputValidationResult Validate(int year)
         {
-            return year > NagerConstraints.MinYear && year < NagerConstraints.MaxYear;
+            if (year < NagerConstraints.MinYear || year > NagerConstraints.MaxYear)
+                return InputValidationResult.Fail($"Year must be between {NagerConstraints.MinYear} and {NagerConstraints.MaxYear}.");
+
+            return InputValidationResult.Success();
         }
     }
 }
