@@ -24,6 +24,8 @@ namespace HolidayAssessment.Controllers
         public async Task Import([FromBody] ImportHolidayRequestDto request)
         {
             YearValidator.Validate(request.Year);
+            await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
+
             await _service.ImportHolidaysAsync(request.Year, request.CountryCodes);
         }
 
