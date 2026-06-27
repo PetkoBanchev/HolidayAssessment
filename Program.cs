@@ -22,6 +22,8 @@ builder.Services.AddHttpClient<INagerApiClient, NagerApiClient>(client =>
     client.BaseAddress = new Uri("https://date.nager.at/api/v3/");
 });
 
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ICountryCacheService, CountryCacheService>();
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
 builder.Services.AddScoped<IHolidayService, HolidayService>();
 builder.Services.AddScoped<CountrySeeder>();
