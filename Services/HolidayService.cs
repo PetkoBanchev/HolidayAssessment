@@ -18,7 +18,12 @@ namespace HolidayAssessment.Services
 
         public async Task<List<HolidayResponseDto>> GetLastThreeHolidaysAsync(string countryCode)
         {
-            var holidays = await _repository.GetByCountryAndYearAsync(countryCode, DateTime.Today.Year);
+            var currentYear = DateTime.Today.Year;
+
+            var holidays = await _repository.GetByCountryAndYearAsync(countryCode, currentYear);
+            var previousYearHolidays = await _repository.GetByCountryAndYearAsync(countryCode, currentYear - 1);
+
+            holidays.AddRange(previousYearHolidays);
 
             return holidays
                 .Where(h => h.Date < DateOnly.FromDateTime(DateTime.Today))
