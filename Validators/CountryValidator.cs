@@ -1,6 +1,4 @@
-﻿using HolidayAssessment.Data;
-using HolidayAssessment.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using HolidayAssessment.Services;
 
 namespace HolidayAssessment.Validators
 {
@@ -14,8 +12,9 @@ namespace HolidayAssessment.Validators
 
         public async Task ValidateCountryCodeAsync(string countryCode)
         {
+            var normalized = countryCode.ToUpperInvariant();
             var codes = await _cache.GetCountryCodesAsync();
-            var exists = codes.Contains(countryCode);
+            var exists = codes.Contains(normalized);
 
             if (!exists)
                 throw new InvalidOperationException($"Invalid country code: {countryCode}");
@@ -26,7 +25,7 @@ namespace HolidayAssessment.Validators
             var codes = await _cache.GetCountryCodesAsync();
 
             var invalid = countryCodes
-                .Where(c => !codes.Contains(c))
+                .Where(c => !codes.Contains(c.ToUpperInvariant()))
                 .ToList();
 
             if (invalid.Any())
