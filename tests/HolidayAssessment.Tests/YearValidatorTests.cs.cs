@@ -2,20 +2,18 @@
 {
     using HolidayAssessment.Validators;
     using Xunit;
+    using FluentAssertions;
 
     public class YearValidatorTests
     {
         [Fact]
         public void Validate_Should_NotThrow_WhenYearIsValid()
         {
-            // Arrange
             var year = 2000;
 
-            // Act
             var action = () => YearValidator.Validate(year);
 
-            // Assert
-            Assert.Null(Record.Exception(action));
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -23,7 +21,9 @@
         {
             var year = 1975;
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => YearValidator.Validate(year));
+            var action = () => YearValidator.Validate(year);
+
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
@@ -31,7 +31,9 @@
         {
             var year = 2077;
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => YearValidator.Validate(year));
+            var action = () => YearValidator.Validate(year);
+
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
     }
 }
