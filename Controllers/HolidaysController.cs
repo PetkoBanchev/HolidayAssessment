@@ -23,22 +23,14 @@ namespace HolidayAssessment.Controllers
         [HttpPost("import")]
         public async Task Import([FromBody] ImportHolidayRequestDto request)
         {
-            try
-            {
-                YearValidator.Validate(request.Year);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            YearValidator.Validate(request.Year);
             await _service.ImportHolidaysAsync(request.Year, request.CountryCodes);
         }
 
         [HttpGet("{countryCode}/last-three")]
         public async Task<IEnumerable<HolidayResponseDto>> GetLastThree(string countryCode)
-        {
-            try { await _countryValidator.ValidateCountryCodeAsync(countryCode); }
-            catch (Exception ex) { }
+        { 
+            await _countryValidator.ValidateCountryCodeAsync(countryCode); 
 
             var result = await _service.GetLastThreeHolidaysAsync(countryCode);
             return result;
@@ -46,38 +38,19 @@ namespace HolidayAssessment.Controllers
 
         [HttpPost("weekday-holidays")]
         public async Task<IEnumerable<WeekdayHolidayDto>> GetHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
-        {
-            try
-            {
-                YearValidator.Validate(request.Year);
-            }
-            catch (Exception ex)
-            {
-                
-            }
-
-            try { await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes); }
-            catch (Exception ex) { }
-
+        {            
+            YearValidator.Validate(request.Year);
+            await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
+            
             var result =  await _service.GetHolidaysOnWeekdaysAsync(request.Year, request.CountryCodes);
             return result;
         }
 
         [HttpPost("weekday-holidays-count")]
         public async Task<IEnumerable<CountryHolidayCountDto>?> GetNumberOfHolidaysOnWeekdays([FromBody] HolidayQueryRequestDto request)
-        {
-            try
-            {
-                YearValidator.Validate(request.Year);
-            }
-            catch (Exception ex) 
-            {
-                   
-            }
-
-            try { await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes); }
-            catch (Exception ex) { }
-
+        { 
+            YearValidator.Validate(request.Year);
+            await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
 
             var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(request.Year, request.CountryCodes);
             return result;
@@ -86,16 +59,8 @@ namespace HolidayAssessment.Controllers
         [HttpGet("shared-holidays")]
         public async Task<IEnumerable<SharedHolidayDto>> GetNumberOfSharedHolidays([FromQuery] int year, [FromQuery] string countryA, [FromQuery] string countryB)
         {
-            try
-            {
-                YearValidator.Validate(year);
-            }
-            catch (Exception ex)
-            {
-                
-            }
-            try { await _countryValidator.ValidateCountryCodesAsync(new List<string> { countryA, countryB }); }
-            catch (Exception ex) { }
+            YearValidator.Validate(year);
+            await _countryValidator.ValidateCountryCodesAsync(new List<string> { countryA, countryB });
 
             var result = await _service.GetNumberOfSharedHolidaysAsync(year, countryA, countryB);
             return result;
