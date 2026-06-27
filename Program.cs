@@ -26,16 +26,9 @@ builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ICountryCacheService, CountryCacheService>();
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
 builder.Services.AddScoped<IHolidayService, HolidayService>();
-builder.Services.AddScoped<CountrySeeder>();
 builder.Services.AddScoped<CountryValidator>();
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<CountrySeeder>();
-    await seeder.SeedAsync();
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

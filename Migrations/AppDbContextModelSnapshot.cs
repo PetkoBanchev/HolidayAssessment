@@ -22,32 +22,6 @@ namespace HolidayAssessment.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HolidayAssessment.Models.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CountryCode")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryCode")
-                        .IsUnique();
-
-                    b.ToTable("Countries");
-                });
-
             modelBuilder.Entity("HolidayAssessment.Models.Holiday", b =>
                 {
                     b.Property<int>("Id")
@@ -97,7 +71,7 @@ namespace HolidayAssessment.Migrations
                     b.HasIndex("CountryCode", "Date")
                         .IsUnique();
 
-                    b.ToTable("Holidays");
+                    b.ToTable("Holidays", (string)null);
                 });
 #pragma warning restore 612, 618
         }
