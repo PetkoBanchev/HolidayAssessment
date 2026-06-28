@@ -37,7 +37,7 @@ namespace HolidayAssessment.Services
                 .ToList();
         }
 
-        public async Task<List<WeekdayHolidayDto>> GetHolidaysOnWeekdaysAsync(int year, List<String> countryCodes)
+        public async Task<List<WeekdayHolidayDto>> GetWeekdayHolidaysAsync(int year, List<String> countryCodes)
         {
             var holidays = await _repository.GetByCountriesAndYearAsync(countryCodes, year);
 
@@ -49,7 +49,7 @@ namespace HolidayAssessment.Services
                 .ToList();
         }
 
-        public async Task<List<CountryHolidayCountDto>> GetNumberOfHolidaysNotOnWeekendsAsync(int year, List<String> countryCodes)
+        public async Task<List<CountryHolidayCountDto>> GetWeekdayHolidaysCountAsync(int year, List<String> countryCodes)
         {
             var holidays = await _repository.GetByCountriesAndYearAsync(countryCodes, year);
 

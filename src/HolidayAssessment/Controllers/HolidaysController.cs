@@ -44,7 +44,7 @@ namespace HolidayAssessment.Controllers
             YearValidator.Validate(request.Year);
             await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
             
-            var result =  await _service.GetHolidaysOnWeekdaysAsync(request.Year, request.CountryCodes);
+            var result =  await _service.GetWeekdayHolidaysAsync(request.Year, request.CountryCodes);
             return result;
         }
 
@@ -54,7 +54,7 @@ namespace HolidayAssessment.Controllers
             YearValidator.Validate(request.Year);
             await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
 
-            var result = await _service.GetNumberOfHolidaysNotOnWeekendsAsync(request.Year, request.CountryCodes);
+            var result = await _service.GetWeekdayHolidaysCountAsync(request.Year, request.CountryCodes);
             return result;
         }
 
