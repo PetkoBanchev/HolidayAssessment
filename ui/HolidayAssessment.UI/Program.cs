@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient("Api", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7000/");
+    client.BaseAddress = new Uri("http://localhost:5181/");
 });
 
 builder.Services.AddScoped<IHolidayApiService, HolidayApiService>();

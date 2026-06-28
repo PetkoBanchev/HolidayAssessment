@@ -1,4 +1,5 @@
-﻿using HolidayAssessment.UI.DTOs;
+﻿using HolidayAssessment.DTOs.RequestDTOs;
+using HolidayAssessment.UI.DTOs;
 using System.Net.Http.Json;
 namespace HolidayAssessment.UI.Services
 {
@@ -13,10 +14,9 @@ namespace HolidayAssessment.UI.Services
 
         public async Task<List<HolidayResponseDto>> GetLastThreeAsync(string countryCode)
         {
-            //return await _http.GetFromJsonAsync<List<HolidayResponseDto>>(
-            //    $"api/holidays/{countryCode}/last-three")
-            //    ?? new();
-            throw new NotImplementedException();
+            return await _http.GetFromJsonAsync<List<HolidayResponseDto>>(
+                $"api/holidays/{countryCode}/last-three")
+                ?? new();
         }
 
         public async Task<List<SharedHolidayDto>> GetSharedHolidaysAsync(int year, string countryA, string countryB)
@@ -34,9 +34,20 @@ namespace HolidayAssessment.UI.Services
             throw new NotImplementedException();
         }
 
-        public async Task ImportHolidaysAsync(int year, List<string> countries)
+        public async Task ImportHolidaysAsync(int year, List<string> countryCodes)
         {
-            throw new NotImplementedException();
+            var request = new ImportHolidayRequestDto
+            {
+                Year = year,
+                CountryCodes = countryCodes
+            };
+
+            var response = await _http.PostAsJsonAsync("api/holidays/import", request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException(error);
+            }
         }
     }
 }

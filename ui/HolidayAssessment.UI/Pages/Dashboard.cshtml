@@ -3,54 +3,91 @@
 
 <h1>Holiday Dashboard</h1>
 
-<hr />
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @Model.SuccessMessage
+    </div>
+}
 
-<h3>Import Holidays</h3>
-
-<div class="mb-3">
-    <label>Countries</label>
-    <select asp-for="ImportCountries"
-            asp-items="Model.CountryOptions"
-            class="form-select"
-            multiple>
-    </select>
-</div>
-
-<div class="mb-3">
-    <label>Year</label>
-    <input asp-for="ImportYear" class="form-control" />
-</div>
-
-<div class="mb-3">
-    <button class="btn btn-primary">Import Holidays</button>
-</div>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
 
 <hr />
 
-<h3>Last 3 Holidays</h3>
+<form method="post" asp-page-handler="Import">
 
-<div class="mb-3">
-    <label>Country</label>
-    <select asp-for="LastThreeCountry" asp-items="Model.CountryOptions"></select>
-</div>
+    <h3>Import Holidays</h3>
+    
+    <div class="mb-3">
+        <label>Countries</label>
+        <select asp-for="ImportCountries"
+                asp-items="Model.CountryOptions"
+                class="form-select"
+                multiple>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label>Year</label>
+        <input asp-for="ImportYear" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <button class="btn btn-primary">Import Holidays</button>
+    </div>
+</form>
 
-<div class="mb-3">
-    <button class="btn btn-primary">Get last 3 holidays</button>
-</div>
+<hr />
 
-<table class="table table-bordered">
+<form method="get" asp-page-handler="LastThree">
+    <h3>Last 3 Holidays</h3>
+    
+    <div class="mb-3">
+        <label>Country</label>
+        <select asp-for="LastThreeCountry" asp-items="Model.CountryOptions"></select>
+    </div>
+    
+    <div class="mb-3">
+        <button type="submit"
+                name="handler"
+                value="LastThree"
+                class="btn btn-primary">
+            Get last 3 holidays
+        </button>
+    </div>
+    
+    <table class="table table-bordered">
     <thead>
         <tr>
             <th>Date</th>
             <th>Name</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td colspan="2">No data loaded yet</td>
-        </tr>
-    </tbody>
+        <tbody>
+            @if (Model.LastThreeHolidays != null && Model.LastThreeHolidays.Any())
+            {
+                foreach (var holiday in Model.LastThreeHolidays)
+                {
+                    <tr>
+                        <td>@holiday.Date</td>
+                        <td>@holiday.Name</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">No data loaded yet</td>
+                </tr>
+            }
+        </tbody>
 </table>
+</form>
 
 <hr />
 

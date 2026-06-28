@@ -20,12 +20,14 @@ namespace HolidayAssessment.Controllers
         }
 
         [HttpPost("import")]
-        public async Task Import([FromBody] ImportHolidayRequestDto request)
+        public async Task<IActionResult> Import([FromBody] ImportHolidayRequestDto request)
         {
             YearValidator.Validate(request.Year);
             await _countryValidator.ValidateCountryCodesAsync(request.CountryCodes);
 
             await _service.ImportHolidaysAsync(request.Year, request.CountryCodes);
+
+            return NoContent();
         }
 
         [HttpGet("{countryCode}/last-three")]
