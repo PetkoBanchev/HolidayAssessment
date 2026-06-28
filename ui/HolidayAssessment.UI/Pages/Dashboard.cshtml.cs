@@ -24,19 +24,19 @@ namespace HolidayAssessment.UI.Pages
         public List<SelectListItem> CountryOptions { get; set; } = new();
 
         // Import
-        [BindProperty] public List<string> ImportCountries { get; set;  } = new();
+        [BindProperty] public List<string> ImportCountries { get; set;  } = new() { "NL", "DE", "GB", "BG"};
         
         [BindProperty] public int ImportYear { get; set; } = DateTime.Today.Year;
 
         // Last 3 holidays
-        [BindProperty(SupportsGet = true)] public string LastThreeCountry { get; set; }
+        [BindProperty(SupportsGet = true)] public string LastThreeCountry { get; set; } = "NL";
 
         // Weekday holidays
-        [BindProperty] public List<string> WeekdayCountries { get; set; } = new() { "BG", "DE"};
+        [BindProperty] public List<string> WeekdayCountries { get; set; } = new() { "NL", "DE"};
         [BindProperty] public int WeekdayYear { get; set; } = DateTime.Today.Year;
 
         // Weekday holiday count
-        [BindProperty] public List<string> CountCountries { get; set; } = new() { "BG", "DE" };
+        [BindProperty] public List<string> CountCountries { get; set; } = new() { "NL", "DE" };
         [BindProperty] public int CountYear { get; set; } = DateTime.Today.Year;
 
         // Shared holidays
