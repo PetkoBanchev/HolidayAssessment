@@ -40,9 +40,9 @@ namespace HolidayAssessment.UI.Pages
         [BindProperty] public int CountYear { get; set; } = DateTime.Today.Year;
 
         // Shared holidays
-        [BindProperty] public string CountryA { get; set; } = "NL";
-        [BindProperty] public string CountryB { get; set; } = "DE";
-        [BindProperty] public int SharedYear { get; set; } = DateTime.Today.Year;
+        [BindProperty(SupportsGet = true)] public string CountryA { get; set; } = "NL";
+        [BindProperty(SupportsGet = true)] public string CountryB { get; set; } = "DE";
+        [BindProperty(SupportsGet = true)] public int SharedYear { get; set; } = DateTime.Today.Year;
 
         // Results
         public List<HolidayResponseDto> LastThreeHolidays { get; set; } = new();
@@ -108,6 +108,21 @@ namespace HolidayAssessment.UI.Pages
             try
             {
                 WeekdayHolidaysCount = await _holidaysApi.GetWeekdayHolidaysCountAsync(CountYear, CountCountries);
+            }
+            catch (HttpRequestException ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+
+            await LoadCountriesAsync();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetSharedHolidaysAsync()
+        {
+            try
+            {
+                SharedHolidays = await _holidaysApi.GetSharedHolidaysAsync(SharedYear, CountryA, CountryB);
             }
             catch (HttpRequestException ex)
             {

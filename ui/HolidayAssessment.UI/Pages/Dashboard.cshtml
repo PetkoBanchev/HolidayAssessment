@@ -205,38 +205,59 @@
 
 <hr />
 
-<h3>Shared Holidays</h3>
-
-<div class="mb-3">
-    <label>Country</label>
-    <select asp-for="CountryA" asp-items="Model.CountryOptions"></select>
-</div>
-
-<div class="mb-3">
-    <label>Country</label>
-    <select asp-for="CountryB" asp-items="Model.CountryOptions"></select>
-</div>
-
-<div class="mb-3">
-    <label>Year</label>
-    <input asp-for="SharedYear" class="form-control" />
-</div>
-
-<div class="mb-3">
-    <button class="btn btn-primary">Get shared holidays</button>
-</div>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Local Name A</th>
-            <th>Local Name B</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="3">No data loaded yet</td>
-        </tr>
-    </tbody>
-</table>
+<form method="get" asp-page-handler="SharedHolidays">
+    <h3>Shared Holidays</h3>
+    
+    <div class="mb-3">
+        <label>Country</label>
+        <select asp-for="CountryA" asp-items="Model.CountryOptions"></select>
+    </div>
+    
+    <div class="mb-3">
+        <label>Country</label>
+        <select asp-for="CountryB" asp-items="Model.CountryOptions"></select>
+    </div>
+    
+    <div class="mb-3">
+        <label>Year</label>
+        <input asp-for="SharedYear" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <button type="submit"
+                name="handler"
+                value="SharedHolidays"
+                class="btn btn-primary">
+            Get shared holidays
+        </button>
+    </div>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Local Name A</th>
+                <th>Local Name B</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.SharedHolidays != null && Model.SharedHolidays.Any())
+            {
+                foreach (var holiday in Model.SharedHolidays)
+                {
+                    <tr>
+                        <td>@holiday.Date</td>
+                        <td>@holiday.LocalNameA</td>
+                        <td>@holiday.LocalNameB</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">No data loaded yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

@@ -49,7 +49,10 @@ namespace HolidayAssessment.UI.Services
 
         public async Task<List<SharedHolidayDto>> GetSharedHolidaysAsync(int year, string countryA, string countryB)
         {
-            throw new NotImplementedException();
+            var url = $"api/holidays/shared-holidays?year={year}&countryA={countryA}&countryB={countryB}";
+
+            return await _http.GetFromJsonAsync<List<SharedHolidayDto>>(url)
+           ?? new List<SharedHolidayDto>();
         }
 
 
