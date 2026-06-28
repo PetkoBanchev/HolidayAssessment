@@ -18,6 +18,20 @@ namespace HolidayAssessment.UI.Services
                 $"api/holidays/{countryCode}/last-three")
                 ?? new();
         }
+        
+        public async Task<List<WeekdayHolidayDto>> GetWeekdayHolidaysAsync(int year, List<string> countries)
+        {
+            var request = new HolidayQueryRequestDto{Year = year,CountryCodes = countries};
+            var response = await _http.PostAsJsonAsync("api/holidays/weekday-holidays", request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException(error);
+            }
+
+            return await response.Content.ReadFromJsonAsync<List<WeekdayHolidayDto>>() ?? new();
+        }
 
         public async Task<List<SharedHolidayDto>> GetSharedHolidaysAsync(int year, string countryA, string countryB)
         {
@@ -29,10 +43,6 @@ namespace HolidayAssessment.UI.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<WeekdayHolidayDto>> GetWeekdayHolidaysAsync(int year, List<string> countries)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task ImportHolidaysAsync(int year, List<string> countryCodes)
         {

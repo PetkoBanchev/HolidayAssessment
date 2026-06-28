@@ -32,8 +32,7 @@ namespace HolidayAssessment.UI.Pages
         [BindProperty(SupportsGet = true)] public string LastThreeCountry { get; set; }
 
         // Weekday holidays
-        [BindProperty] public List<string> WeekdayCountries { get; set; } = new();
-        
+        [BindProperty] public List<string> WeekdayCountries { get; set; } = new() { "BG", "DE"};
         [BindProperty] public int WeekdayYear { get; set; } = DateTime.Today.Year;
 
         // Weekday holiday count
@@ -79,6 +78,21 @@ namespace HolidayAssessment.UI.Pages
             try
             {
                 LastThreeHolidays = await _holidaysApi.GetLastThreeAsync(LastThreeCountry);
+            }
+            catch (HttpRequestException ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+
+            await LoadCountriesAsync();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostWeekdayHolidaysAsync()
+        {
+            try
+            {
+                WeekdayHolidays = await _holidaysApi.GetWeekdayHolidaysAsync(WeekdayYear, WeekdayCountries);
             }
             catch (HttpRequestException ex)
             {

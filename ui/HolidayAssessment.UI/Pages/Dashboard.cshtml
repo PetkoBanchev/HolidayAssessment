@@ -91,40 +91,61 @@
 
 <hr />
 
-<h3>Weekday Holidays (Use to verify the count)</h3>
-
-<div class="mb-3">
-    <label>Countries</label>
-    <select asp-for="WeekdayCountries"
-            asp-items="Model.CountryOptions"
-            class="form-select"
-            multiple>
-    </select>
-</div>
-
-<div class="mb-3">
-    <label>Year</label>
-    <input asp-for="WeekdayYear" class="form-control" />
-</div>
-
-<div class="mb-3">
-    <button class="btn btn-primary">Get weekday holidays</button>
-</div>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Country</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="3">No data loaded yet</td>
-        </tr>
-    </tbody>
-</table>
+<form method="post" asp-page-handler="WeekdayHolidays">
+    <h3>Weekday Holidays (Use to verify the count)</h3>
+    
+    <div class="mb-3">
+        <label>Countries</label>
+        <select asp-for="WeekdayCountries"
+                asp-items="Model.CountryOptions"
+                class="form-select"
+                multiple>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label>Year</label>
+        <input asp-for="WeekdayYear" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <button type="submit"
+                name="handler"
+                value="WeekdayHolidays"
+                class="btn btn-primary">
+            Get weekday holidays
+        </button>
+    </div>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.WeekdayHolidays != null && Model.WeekdayHolidays.Any())
+            {
+                foreach (var holiday in Model.WeekdayHolidays)
+                {
+                    <tr>
+                        <td>@holiday.Date</td>
+                        <td>@holiday.Name</td>
+                        <td>@holiday.CountryCode</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No data loaded yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
 
 <hr />
 
