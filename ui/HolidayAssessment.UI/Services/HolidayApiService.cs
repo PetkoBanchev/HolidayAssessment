@@ -1,6 +1,7 @@
 ﻿using HolidayAssessment.DTOs.RequestDTOs;
 using HolidayAssessment.UI.DTOs;
 using System.Net.Http.Json;
+using System.Text.Json;
 namespace HolidayAssessment.UI.Services
 {
     public class HolidayApiService: IHolidayApiService
@@ -32,16 +33,25 @@ namespace HolidayAssessment.UI.Services
 
             return await response.Content.ReadFromJsonAsync<List<WeekdayHolidayDto>>() ?? new();
         }
+        public async Task<List<CountryHolidayCountDto>> GetWeekdayHolidaysCountAsync(int year, List<string> countries)
+        {
+            var request = new HolidayQueryRequestDto { Year = year, CountryCodes = countries };
+            var response = await _http.PostAsJsonAsync("api/holidays/weekday-holidays-count", request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException(error);
+            }
+
+            return await response.Content.ReadFromJsonAsync<List<CountryHolidayCountDto>>() ?? new();
+        }
 
         public async Task<List<SharedHolidayDto>> GetSharedHolidaysAsync(int year, string countryA, string countryB)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<CountryHolidayCountDto>> GetWeekdayHolidayCountsAsync(int year, List<string> countries)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public async Task ImportHolidaysAsync(int year, List<string> countryCodes)

@@ -8,7 +8,7 @@ namespace HolidayAssessment.UI.Services
 
         Task<List<WeekdayHolidayDto>> GetWeekdayHolidaysAsync(int year, List<string> countries);
 
-        Task<List<CountryHolidayCountDto>> GetWeekdayHolidayCountsAsync(int year, List<string> countries);
+        Task<List<CountryHolidayCountDto>> GetWeekdayHolidaysCountAsync(int year, List<string> countries);
 
         Task<List<SharedHolidayDto>> GetSharedHolidaysAsync(int year, string countryA, string countryB);
 

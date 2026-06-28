@@ -149,27 +149,33 @@
 
 <hr />
 
-<h3>Weekday Holidays Count</h3>
-
-<div class="mb-3">
-    <label>Countries</label>
-    <select asp-for="CountCountries"
-            asp-items="Model.CountryOptions"
-            class="form-select"
-            multiple>
-    </select>
-</div>
-
-<div class="mb-3">
-    <label>Year</label>
-    <input asp-for="CountYear" class="form-control" />
-</div>
-
-<div class="mb-3">
-    <button class="btn btn-primary">Get weekday holidays</button>
-</div>
-
-<table class="table table-bordered">
+<form method="post" asp-page-handler="WeekdayHolidaysCount">
+    <h3>Weekday Holidays Count</h3>
+    
+    <div class="mb-3">
+        <label>Countries</label>
+        <select asp-for="CountCountries"
+                asp-items="Model.CountryOptions"
+                class="form-select"
+                multiple>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label>Year</label>
+        <input asp-for="CountYear" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <button type="submit"
+                name="handler"
+                value="WeekdayHolidaysCount"
+                class="btn btn-primary">
+            Get weekday holidays count
+        </button>
+    </div>
+    
+    <table class="table table-bordered">
     <thead>
         <tr>
             <th>Country</th>
@@ -177,11 +183,25 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td colspan="3">No data loaded yet</td>
-        </tr>
+            @if (Model.WeekdayHolidaysCount != null && Model.WeekdayHolidaysCount.Any())
+        {
+                foreach (var holiday in Model.WeekdayHolidaysCount)
+            {
+                <tr>
+                    <td>@holiday.CountryCode</td>
+                    <td>@holiday.Count</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">No data loaded yet</td>
+            </tr>
+        }
     </tbody>
 </table>
+</form>
 
 <hr />
 

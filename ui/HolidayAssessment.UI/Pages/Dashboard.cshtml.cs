@@ -36,7 +36,7 @@ namespace HolidayAssessment.UI.Pages
         [BindProperty] public int WeekdayYear { get; set; } = DateTime.Today.Year;
 
         // Weekday holiday count
-        [BindProperty] public List<string> CountCountries { get; set; } = new();
+        [BindProperty] public List<string> CountCountries { get; set; } = new() { "BG", "DE" };
         [BindProperty] public int CountYear { get; set; } = DateTime.Today.Year;
 
         // Shared holidays
@@ -47,7 +47,7 @@ namespace HolidayAssessment.UI.Pages
         // Results
         public List<HolidayResponseDto> LastThreeHolidays { get; set; } = new();
         public List<WeekdayHolidayDto> WeekdayHolidays { get; set; } = new();
-        public List<CountryHolidayCountDto> WeekdayHolidayCounts { get; set; } = new();
+        public List<CountryHolidayCountDto> WeekdayHolidaysCount { get; set; } = new();
         public List<SharedHolidayDto> SharedHolidays { get; set; } = new();
 
         public async Task OnGetAsync()
@@ -93,6 +93,21 @@ namespace HolidayAssessment.UI.Pages
             try
             {
                 WeekdayHolidays = await _holidaysApi.GetWeekdayHolidaysAsync(WeekdayYear, WeekdayCountries);
+            }
+            catch (HttpRequestException ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+
+            await LoadCountriesAsync();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostWeekdayHolidaysCountAsync()
+        {
+            try
+            {
+                WeekdayHolidaysCount = await _holidaysApi.GetWeekdayHolidaysCountAsync(CountYear, CountCountries);
             }
             catch (HttpRequestException ex)
             {
