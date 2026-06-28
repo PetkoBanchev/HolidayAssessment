@@ -53,12 +53,22 @@ namespace HolidayAssessment.Services
         {
             var holidays = await _repository.GetByCountriesAndYearAsync(countryCodes, year);
 
-            return holidays
-                .Where(h => h.Date.DayOfWeek != DayOfWeek.Saturday && h.Date.DayOfWeek != DayOfWeek.Sunday)
-                .GroupBy(h => h.CountryCode)
-                .Select(g => new CountryHolidayCountDto{CountryCode = g.Key, Count = g.Count()})
+            var weekdayCounts = holidays
+                .Where(h => h.Date.DayOfWeek != DayOfWeek.Saturday &&
+                            h.Date.DayOfWeek != DayOfWeek.Sunday)
+                .GroupBy(h => h.CountryCode.ToUpperInvariant())
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var result = countryCodes
+                .Select(code => new CountryHolidayCountDto
+                {
+                    CountryCode = code.ToUpperInvariant(),
+                    Count = weekdayCounts.GetValueOrDefault(code.ToUpperInvariant(), 0)
+                })
                 .OrderByDescending(x => x.Count)
                 .ToList();
+
+            return result;
         }
 
         public async Task<List<SharedHolidayDto>> GetNumberOfSharedHolidaysAsync(int year, string countryA, string countryB)
