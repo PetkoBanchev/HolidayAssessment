@@ -77,7 +77,8 @@ dotnet ef database update
 
 ### 4. Run the backend
 ```bash
-cd src/HolidayAssessment && dotnet run
+cd src/HolidayAssessment
+dotnet run
 ```
 You test the API endpoints here:
 [http://localhost:5181/scalar/v1](http://localhost:5181/scalar/v1)
@@ -85,7 +86,8 @@ You test the API endpoints here:
 ### 5. Run the frontend
 Open a new terminal and navigate to the root. Then run:
 ```bash
-cd ui/HolidayAssessment.UI && dotnet run
+cd ui/HolidayAssessment.UI
+dotnet run
 ```
 The front is here:
 [http://localhost:5195/](http://localhost:5195/)
@@ -95,7 +97,7 @@ Use the frontend or the Import Holidays endpoint
 ```http
 POST /api/holidays/import
 ```
-If you don't import data the enpoints will always return empty results
+If you don't import data, the endpoints will always return empty results
 
 ## API Endpoints
 ```http
@@ -117,7 +119,7 @@ GET /api/holidays/shared-holidays?year=2026&countryA=NL&countryB=DE
 ```
 
 ## Running tests
-Open a terminal into the root folder
+Open a terminal in the root folder
 ```bash
 dotnet test
 ```
@@ -141,7 +143,7 @@ Check:
 Ensure:
 - You have imported the data for the chosen year and country!
 - Country API endpoint is working
-- MemoryCache is enabled in backend
+- MemoryCache is enabled in the backend
 
 ### Application not loading
 
